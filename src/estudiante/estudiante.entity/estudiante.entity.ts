@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Reseña } from 'src/resena/resena.entity/resena.entity';
 import { Actividad } from 'src/actividad/actividad.entity/actividad.entity';
 
@@ -25,6 +25,7 @@ export class Estudiante {
   @OneToMany(() => Reseña, reseña => reseña.estudiante)
   resenas: Reseña[];
 
-  @OneToMany(() => Actividad, actividad => actividad.estudiante)
+  @ManyToMany(() => Actividad, actividad => actividad.estudiantes)
+  @JoinTable()
   actividades: Actividad[];
 }

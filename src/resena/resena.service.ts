@@ -44,7 +44,7 @@ export class ResenaService {
       throw new BadRequestException('La actividad no ha finalizado');
     }
 
-    const inscrito = actividad.estudiante.some(e => e.id === estudiante.id);
+    const inscrito = actividad.estudiantes.some(e => e.id === estudiante.id);
     if (!inscrito) {
       throw new BadRequestException('Estudiante no inscrito en la actividad');
     }
