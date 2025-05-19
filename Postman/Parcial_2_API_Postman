@@ -1,0 +1,266 @@
+{
+	"info": {
+		"_postman_id": "41fc8516-4c7e-469d-9db4-4c629bdc6dbe",
+		"name": "Parcial 2 API con Pruebas",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29768818"
+	},
+	"item": [
+		{
+			"name": "Estudiantes",
+			"item": [
+				{
+					"name": "Crear Estudiante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Debe devolver el objeto creado con id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.have.property(\"id\");",
+									"    pm.expect(jsonData.nombre).to.eql(\"Laura Torres\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cedula\": 123456,\n  \"nombre\": \"Laura Torres\",\n  \"correo\": \"laura@uni.edu.co\",\n  \"programa\": \"Psicologia\",\n  \"semestre\": 5\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/estudiantes",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estudiantes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear Estudiante (correo inválido)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Debe fallar con status 400 por correo inválido\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"cedula\": 789012,\n  \"nombre\": \"Pedro Malo\",\n  \"correo\": \"correo-invalido\",\n  \"programa\": \"Filosofia\",\n  \"semestre\": 3\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/estudiantes",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estudiantes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Inscribirse en Actividad",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Inscripción exitosa\", function () {",
+									"    pm.response.to.have.status(200);",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.estado).to.eql(true);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/estudiantes/1/actividades/10",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"estudiantes",
+								"1",
+								"actividades",
+								"10"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reseñas",
+			"item": [
+				{
+					"name": "Agregar Reseña (actividad no finalizada)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Debe fallar con status 400 por actividad no finalizada\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"comentario\": \"Intento invalido\",\n  \"calificacion\": 3,\n  \"fecha\": \"2024-05-20\",\n  \"estudianteId\": 1,\n  \"actividadId\": 999\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/resenas",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"resenas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Actividades",
+			"item": [
+				{
+					"name": "Crear Actividad",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"titulo\": \"musica\",\n  \"fecha\": \"2024-05-20\",\n  \"cupoMaximo\": 100,\n  \"estado\": 0\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/actividades",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"actividades"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cambiar Estado Actividad",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"estado\": 1\n}"
+						},
+						"url": {
+							"raw": "localhost:3000/actividades/10/estado",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"actividades",
+								"10",
+								"estado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Actividades por Fecha",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/actividades/fecha/2024-05-20",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"actividades",
+								"fecha",
+								"2024-05-20"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

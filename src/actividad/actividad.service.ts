@@ -2,7 +2,8 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Like } from 'typeorm';
-import { Actividad } from './actividad.entity/actividad.entity';
+import { Actividad } from './actividad.entity';
+import { ActividadDTO } from './actividad.dto/actividad.dto';
 
 @Injectable()
 export class ActividadService {
@@ -11,7 +12,7 @@ export class ActividadService {
     private actividadRepo: Repository<Actividad>,
   ) {}
 
-  async crearActividad(actividad: Partial<Actividad>) {
+  async crearActividad(actividad: ActividadDTO) {
     const regex = /^[a-zA-Z0-9\s]+$/;
     if (actividad.titulo.length < 15 || !regex.test(actividad.titulo)) {
       throw new BadRequestException('Título inválido (mínimo 15 caracteres sin símbolos)');
@@ -29,7 +30,7 @@ export class ActividadService {
 
     if (!actividad) throw new BadRequestException('Actividad no encontrada');
 
-    const inscritos = actividad.estudiante?.length || 0;
+    const inscritos = actividad.estudiantes.length || 0;
 
     if (nuevoEstado === 1 && inscritos < Math.ceil(actividad.cupoMaximo * 0.8)) {
       throw new BadRequestException('No se puede cerrar, cupo insuficiente');

@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany } from 'typeorm';
-import { Reseña } from 'src/resena/resena.entity/resena.entity';
-import { Estudiante } from 'src/estudiante/estudiante.entity/estudiante.entity';
+import { Reseña } from 'src/resena/resena.entity';
+import { Estudiante } from 'src/estudiante/estudiante.entity';
 
 @Entity()
 export class Actividad {

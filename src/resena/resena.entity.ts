@@ -1,7 +1,7 @@
 // resena.entity.ts
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Estudiante } from 'src/estudiante/estudiante.entity/estudiante.entity';
-import { Actividad } from 'src/actividad/actividad.entity/actividad.entity';
+import { Estudiante } from 'src/estudiante/estudiante.entity';
+import { Actividad } from 'src/actividad/actividad.entity';
 
 @Entity()
 export class Reseña {

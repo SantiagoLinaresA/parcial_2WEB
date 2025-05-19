@@ -1,9 +1,9 @@
-// estudiante.service.ts
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Estudiante } from 'src/estudiante/estudiante.entity/estudiante.entity';
-import { Actividad } from 'src/actividad/actividad.entity/actividad.entity';
+import { Estudiante } from 'src/estudiante/estudiante.entity';
+import { Actividad } from 'src/actividad/actividad.entity';
+import { CrearEstudianteDTO } from './crear-estudiante.dto/crear-estudiante.dto';
 
 @Injectable()
 export class EstudianteService {
@@ -15,7 +15,7 @@ export class EstudianteService {
     private actividadRepo: Repository<Actividad>,
   ) {}
 
-  async crearEstudiante(estudiante: Partial<Estudiante>) {
+  async crearEstudiante(estudiante: CrearEstudianteDTO) {
     if (!estudiante.correo.includes('@')) {
       throw new BadRequestException('Correo inválido');
     }
@@ -53,15 +53,15 @@ export class EstudianteService {
       throw new BadRequestException('La actividad no está abierta');
     }
 
-    if (actividad.estudiante.length >= actividad.cupoMaximo) {
+    if (actividad.estudiantes.length >= actividad.cupoMaximo) {
       throw new BadRequestException('La actividad está llena');
     }
 
-    if (actividad.estudiante.some(e => e.id === estudiante.id)) {
+    if (actividad.estudiantes.some(e => e.id === estudiante.id)) {
       throw new BadRequestException('Ya está inscrito en la actividad');
     }
 
-    actividad.estudiante.push(estudiante);
+    actividad.estudiantes.push(estudiante);
     await this.actividadRepo.save(actividad);
 
     return { mensaje: 'Inscripción exitosa', estado: true };
